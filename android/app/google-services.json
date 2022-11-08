@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "343832810991",
+    "project_id": "happyours-80c4c",
+    "storage_bucket": "happyours-80c4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343832810991:android:5020e26548e4458d77521a",
+        "android_client_info": {
+          "package_name": "com.nyu.happyours"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343832810991-9v1vrm3jo9srfh84123jgn9as7550so4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0B22hAeYgWGvB_7kGCHavsYdFaZfBPcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343832810991-9v1vrm3jo9srfh84123jgn9as7550so4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

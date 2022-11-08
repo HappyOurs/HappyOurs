@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>343832810991-7oiodiqmb3ar22vsaio64spmm83gsh1n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.343832810991-7oiodiqmb3ar22vsaio64spmm83gsh1n</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB1QAsPtogQv91IFIHFi-rc7eSKKW8U2RM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>343832810991</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nyu.happyours</string>
+	<key>PROJECT_ID</key>
+	<string>happyours-80c4c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>happyours-80c4c.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:343832810991:ios:744845c98f2ea20a77521a</string>
+</dict>
+</plist>
