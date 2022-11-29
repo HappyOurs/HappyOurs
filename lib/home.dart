@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           const Icon(
+            //needs change
             Icons.menu,
             color: Colors.black,
           ),
@@ -63,7 +64,6 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             // searchbar
-
             Container(
               margin: EdgeInsets.only(top: width * 0.05, bottom: width * 0.1),
               height: width * 0.103,
@@ -118,13 +118,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // SafeArea(
-      //   child: Center(
-      //     child: Container(
-      //       child: const Text("Page under construction"),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
