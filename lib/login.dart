@@ -99,7 +99,9 @@ class _LoginState extends State<Login> {
                       .then((_) => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const OTPPage())));
+                              builder: (context) => OTPPage(
+                                    phoneNumber: controller.text,
+                                  ))));
                 },
                 child: Container(
                   width: width * 0.86,
