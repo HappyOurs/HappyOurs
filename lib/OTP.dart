@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -6,15 +7,48 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'home.dart';
+import 'home_v2.dart';
 
 class OTPPage extends StatefulWidget {
-  const OTPPage({Key? key}) : super(key: key);
+  final String phoneNumber;
+  const OTPPage({
+    Key? key,
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
   State<OTPPage> createState() => _OTPPageState();
 }
 
 class _OTPPageState extends State<OTPPage> {
+  late Timer _timer;
+  int timeRem = 30;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (timeRem == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          // print(timeRem);
+          setState(() {
+            timeRem--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
   @override
   Widget build(BuildContext context) {
     ///Take 6 digit OTP as input from user
@@ -30,151 +64,178 @@ class _OTPPageState extends State<OTPPage> {
     bool termsAndConditionsAccepted = false;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    // startTimer();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child:Column(
+        child: Container(
+          padding: EdgeInsets.all(0.027 * width),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-        Container(
-        margin: EdgeInsets.only(
-        left: width * 0.1,
-            right: width * 0.1,
-            top: height * 0.05),
-        child: RichText(
-          text: TextSpan(
-              text: 'A One-time Password has been sent to your ',
-              style: TextStyle(
-                  color: Color.fromRGBO(78, 89, 111, 1),
-                  fontFamily: 'Manrope',
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600),
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'mobile number.',
-                  style: TextStyle(
-                      color: Color.fromRGBO(78, 89, 111, 1),
-                      fontFamily: 'Manrope',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600),
-                  children: [
-                    TextSpan(
-                        text: ' Tap to change number',
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pop(context);
-                          },
-                        style: TextStyle(
-                            color: Color.fromRGBO(114, 224, 223, 1),
-                            fontFamily: 'Manrope',
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w600))
-                  ],
-                )
-              ]),
-        ),
-      ),
-              //OTP Field
-              Container(
-                margin: EdgeInsets.only(
-                    left: width * 0.1,
-                    right: width * 0.1,
-                    top: height * 0.05),
-                child: const Text(
-                  "Enter OTP",
-                  style: TextStyle(
-                      color: Color.fromRGBO(78, 89, 111, 1),
-                      fontFamily: 'Manrope',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
+              //texts
               Row(
                 children: [
-                  Container(
-                    height: height * 0.15,
-                    width: width,
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: height / 30, horizontal: width / 30),
-                        child: PinCodeTextField(
-                          focusNode: focusNode ,
-                          enablePinAutofill: true,
-                          appContext: context,
-                          length: 6,
-                          animationType: AnimationType.scale,
-                          pinTheme: PinTheme(
-                            shape: PinCodeFieldShape.underline,
-                            selectedColor: Color.fromRGBO(78, 89, 111, 0.3),
-                            inactiveColor: Color.fromRGBO(78, 89, 111, 0.3),
-                            activeColor: Color.fromRGBO(99, 196, 51, 1),
-                            fieldHeight: height / 15,
-                            fieldWidth: width / 7,
-                          ),
-                          cursorColor: Colors.black,
-                          animationDuration: Duration(milliseconds: 300),
-                          textStyle: TextStyle(fontSize: 20, height: 1.6),
-                          errorAnimationController: errorController,
-                          controller: controller,
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              currentText = value;
-                            });
-                          },
-                          beforeTextPaste: (text) {
-                            print("Allowing to paste $text");
-                            return true;
-                          },
-                        )),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      // height: ,
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: width * 0.085,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 32,
+                    child: Container(),
+                  ),
+                  const Text(
+                    "We have sent a verification code to",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Inter',
+                        fontSize: 16),
+                  ),
+                  Flexible(
+                    flex: 61,
+                    child: Container(),
                   ),
                 ],
               ),
-              ///Elevated Button
-              Container(
-                margin: EdgeInsets.only(
-                    left: width * 0.1,
-                    right: width * 0.1,
-                    top: height * 0.05),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (currentText.length != 6) {
-                      errorController.add(ErrorAnimationType.shake);
-                      setState(() {
-                        hasError = true;
-                      });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomePage()));
-                    } else {
-                      setState(() {
-                        hasError = false;
-                      });
-
-                    }
-                  },
-                  child: const Text(
-                    "Verify",
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        fontFamily: 'Manrope',
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(99, 196, 51, 1),
-                    minimumSize: Size(width * 0.8, height * 0.07),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
+              Center(
+                child: Text(
+                  widget.phoneNumber,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontFamily: 'Inter',
+                      fontSize: 16),
                 ),
               ),
-    ],)
+              const SizedBox(
+                height: 10,
+              ),
+              //input otp
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: height * 0.15,
+                    width: width * 0.536,
+                    child: PinCodeTextField(
+                      focusNode: focusNode,
+                      enablePinAutofill: true,
+                      appContext: context,
+                      length: 6,
+                      animationType: AnimationType.scale,
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        selectedColor: const Color.fromRGBO(78, 89, 111, 0.3),
+                        inactiveColor: const Color.fromRGBO(78, 89, 111, 0.3),
+                        activeColor: const Color(0xfff6d7d7),
+                        fieldHeight: width * 0.084,
+                        fieldWidth: width * 0.077,
+                        borderRadius: BorderRadius.circular(3),
+                        borderWidth: 0.5,
+                      ),
+                      cursorColor: Colors.black,
+                      animationDuration: const Duration(milliseconds: 300),
+                      textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'Inter',
+                          fontSize: 16),
+                      errorAnimationController: errorController,
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                      onCompleted: (v) {
+                        print("Completed");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePageV2(
+                                )));
+                      },
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          currentText = value;
+                        });
+                      },
+                      beforeTextPaste: (text) {
+                        print("Allowing to paste $text");
+                        return true;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Flexible(
+                flex: 611,
+                child: Container(),
+              ),
+              //timer
+              Center(
+                child: Text(
+                  "0:$timeRem",
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontFamily: 'Inter',
+                      fontSize: 16),
+                ),
+              ),
+
+              Flexible(
+                flex: 19,
+                child: Container(),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  //didn't receive
+                  const Text(
+                    "Didn't receive the code?",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Inter',
+                        fontSize: 16),
+                  ),
+                  //resend
+                  InkWell(
+                    child: Container(
+                      child: const Text(
+                        "Resend now",
+                        style: TextStyle(
+                            color: Color(0xffC4C4C4),
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontFamily: 'Inter',
+                            fontSize: 16),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Flexible(
+                flex: 28,
+                child: Container(),
+              ),
+            ],
+          ),
+        ),
       ),
     );
-
   }
 }
