@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'home.dart';
+import 'home_v2.dart';
 
 class OTPPage extends StatefulWidget {
   final String phoneNumber;
@@ -154,6 +155,14 @@ class _OTPPageState extends State<OTPPage> {
                       errorAnimationController: errorController,
                       controller: controller,
                       keyboardType: TextInputType.number,
+                      onCompleted: (v) {
+                        print("Completed");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePageV2(
+                                )));
+                      },
                       onChanged: (value) {
                         print(value);
                         setState(() {
@@ -195,7 +204,7 @@ class _OTPPageState extends State<OTPPage> {
                 children: [
                   //didn't receive
                   const Text(
-                    "Did'nt receive the code?",
+                    "Didn't receive the code?",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,

@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
     var height = MediaQuery.of(context).size.height;
     FocusNode focusNode = FocusNode();
     TextEditingController controller =
-        TextEditingController(text: "+1 (470) 902-1657");
+        TextEditingController(text: "+1(470)902-1657");
     // +1 (470) 902-1657
     return Scaffold(
       backgroundColor: const Color(0xfff6d7d7),

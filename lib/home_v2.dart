@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:happyours/widgets/bar_card.dart';
 import 'package:happyours/widgets/vibe_option.dart';
 
+import 'home.dart';
+
 class HomePageV2 extends StatefulWidget {
   const HomePageV2({super.key});
 
@@ -173,18 +175,31 @@ class _HomePageV2State extends State<HomePageV2> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      vibeOption(
-                          img: "assets/vibe1.png",
-                          vibeName: "Affordable",
-                          width: width),
+                      // Go to HomePage on Tap
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                          );
+                        },
+                        child: vibeOption(
+                            img: "assets/vibe1.png",
+                            vibeName: "Affordable",
+                            width: width),
+                      ),
                       vibeOption(
                           img: "assets/vibe2.png",
                           vibeName: "Romantic",
-                          width: width),
+                          width: width,
+                      isSelected: true),
                       vibeOption(
                           img: "assets/vibe3.png",
                           vibeName: "Dance Floor",
-                          width: width),
+                          width: width,
+                          isSelected: false),
                       vibeOption(
                           img: "assets/vibe4.png",
                           vibeName: "College Crowd",

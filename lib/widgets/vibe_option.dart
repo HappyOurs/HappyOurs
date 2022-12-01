@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget vibeOption(
-    {required String img, required String vibeName, required double width}) {
+    {required String img, required String vibeName, required double width, bool isSelected = false}) {
   return Container(
       height: width * 0.32,
       width: width * 0.2,
@@ -9,13 +9,16 @@ Widget vibeOption(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ClipRRect(
+            //Change colour to orange if isSelected is true
+
             borderRadius: BorderRadius.circular(width * 0.1),
-            child: Image.asset(
-              img,
-              // width: 150,
-              height: width * 0.2,
-              width: width * 0.2,
-              fit: BoxFit.cover,
+            child: CircleAvatar(
+              radius: width * 0.1,
+              backgroundColor: Colors.deepOrange,
+              child: CircleAvatar(
+                backgroundImage: AssetImage(img),
+                radius: isSelected?width * 0.09:width * 0.1,
+              ),
             ),
           ),
           Expanded(
