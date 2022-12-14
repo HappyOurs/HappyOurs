@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:happyours/OTP.dart';
+import 'package:happyours/emailLogin.dart';
+import 'package:happyours/listPage.dart';
 import 'package:happyours/home.dart';
 
 import 'auth.dart';
@@ -169,6 +171,11 @@ class _LoginState extends State<Login> {
                 height: width * 0.155,
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const emailLogin()));
+
                     // loginUserDb(context, _emailTextController,
                     // _passwordTextController);
                   },
@@ -201,100 +208,6 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: width * 0.05,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //Login with faceBook
-                  Container(
-                    width: width * 0.418,
-                    height: width * 0.155,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // loginUserDb(context, _emailTextController,
-                        // _passwordTextController);
-                      },
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8))),
-                      ),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(flex: 1, child: Container()),
-                          Icon(
-                            Icons.facebook,
-                            color: Colors.black,
-                            size: width * 0.08,
-                          ),
-                          Flexible(flex: 5, child: Container()),
-                          const Text(
-                            "Facebook",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Inter',
-                                fontSize: 19),
-                          ),
-                          Flexible(flex: 4, child: Container()),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * .0266,
-                  ),
-                  //Login with Google
-                  Container(
-                    width: width * 0.418,
-                    height: width * 0.155,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // loginUserDb(context, _emailTextController,
-                        // _passwordTextController);
-                      },
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8))),
-                      ),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(flex: 1, child: Container()),
-                          Icon(
-                            //change to google logo
-                            CupertinoIcons.mail,
-                            color: Colors.black,
-                            size: width * 0.08,
-                          ),
-                          Flexible(flex: 5, child: Container()),
-                          const Text(
-                            "Google",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Inter',
-                                fontSize: 19),
-                          ),
-                          Flexible(flex: 4, child: Container()),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
               ),
               SizedBox(
                 height: width * 0.05,
@@ -372,6 +285,32 @@ class _LoginState extends State<Login> {
                   ),
                   SizedBox(
                     height: width * 0.05,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: width * 0.05,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //terms of service
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    },
+                    child: const Text(
+                      "Continue as Guest",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
                 ],
               ),

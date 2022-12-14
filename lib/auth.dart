@@ -8,7 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:overlay_support/overlay_support.dart';
 //import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
-
 DocumentReference<Map<String, dynamic>>? userDocReference;
 
 class PasswordCheckError implements Exception {
@@ -31,7 +30,7 @@ class LoginSettings {
   bool isGoogle = false;
   bool isFacebook = false;
   bool isApple = false;
-  List<String> loginMethods=[];
+  List<String> loginMethods = [];
 
   LoginSettings(
       {this.checkingCompleted = false,
@@ -43,7 +42,6 @@ class LoginSettings {
 }
 
 abstract class BaseAuth {
-
   Future<User> signIn({required String email, required String password});
 
   Future<LoginSettings> getLoginSettings({required String email});
@@ -81,20 +79,18 @@ abstract class BaseAuth {
 }
 
 class Auth implements BaseAuth {
-
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static String? _smsVerificationCode;
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<User> signIn(
-      {required String email, required String password}) async {
+  Future<User> signIn({required String email, required String password}) async {
     try {
       UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      userDocReference =  FirebaseFirestore.instance.collection("users").doc(user.uid);
+      userDocReference =
+          FirebaseFirestore.instance.collection("users").doc(user.uid);
       return user;
     } on FirebaseAuthException catch (e) {
       showSimpleNotification(Text(e.message!), background: Color(0xff29a39d));
@@ -123,8 +119,8 @@ class Auth implements BaseAuth {
 
       loginSettings.checkingCompleted = false;
     } else {
-      RegExp emailCheck = new RegExp(
-          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+      RegExp emailCheck = RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
       if (emailCheck.hasMatch(email)) {
         loginSettings.checkingCompleted = true;
         List<String> loginMethods = await _emailLoginMethods(email: email);
@@ -173,7 +169,8 @@ class Auth implements BaseAuth {
       User user = result.user!;
       user.sendEmailVerification();
 
-      userDocReference =  FirebaseFirestore.instance.collection("users").doc(user.uid);
+      userDocReference =
+          FirebaseFirestore.instance.collection("users").doc(user.uid);
       return user;
     } else {
       if (password == password2) {
@@ -182,9 +179,12 @@ class Auth implements BaseAuth {
         User user = result.user!;
         user.sendEmailVerification();
 
-        userDocReference =  FirebaseFirestore.instance.collection("users").doc(user.uid);
+        userDocReference =
+            FirebaseFirestore.instance.collection("users").doc(user.uid);
         return user;
       } else {
+        showSimpleNotification(Text("Passwords do not match"),
+            background: Color(Colors.red.value));
         throw PasswordCheckError();
       }
     }
@@ -216,8 +216,10 @@ class Auth implements BaseAuth {
   }
 
   User? getCurrentUser() {
-    User?user = _firebaseAuth.currentUser;
-    if(user!=null) userDocReference =  FirebaseFirestore.instance.collection("users").doc(user.uid);
+    User? user = _firebaseAuth.currentUser;
+    if (user != null)
+      userDocReference =
+          FirebaseFirestore.instance.collection("users").doc(user.uid);
     return user;
   }
 
@@ -310,8 +312,9 @@ class Auth implements BaseAuth {
           background: Color(0xff29a39d));
       return null;
     } else {
-      if(_smsVerificationCode == null){
-        showSimpleNotification(Text('Verification Code never sent. Please try again or wait'),
+      if (_smsVerificationCode == null) {
+        showSimpleNotification(
+            Text('Verification Code never sent. Please try again or wait'),
             background: Color(0xff29a39d));
       }
       var _authCredential = PhoneAuthProvider.credential(
@@ -332,7 +335,8 @@ class Auth implements BaseAuth {
   }
 
   Future<User> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = (await googleSignIn.signIn())!;
+    final GoogleSignInAccount googleSignInAccount =
+        (await googleSignIn.signIn())!;
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
@@ -348,11 +352,10 @@ class Auth implements BaseAuth {
     assert(!user.isAnonymous);
     final User currentUser = _firebaseAuth.currentUser!;
     assert(user.uid == currentUser.uid);
-    userDocReference =  FirebaseFirestore.instance.collection("users").doc(user.uid);
+    userDocReference =
+        FirebaseFirestore.instance.collection("users").doc(user.uid);
     return user;
   }
-
-
 
   /*Future<User> signInWithFacebook() async {
     FacebookLoginResult facebookLoginResult = await handleFBSignIn();

@@ -6,8 +6,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import 'listPage.dart';
 import 'home.dart';
-import 'home_v2.dart';
 
 class OTPPage extends StatefulWidget {
   final String phoneNumber;
@@ -160,8 +160,7 @@ class _OTPPageState extends State<OTPPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomePageV2(
-                                )));
+                                builder: (context) => HomePage()));
                       },
                       onChanged: (value) {
                         print(value);
