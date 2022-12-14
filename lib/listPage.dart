@@ -10,8 +10,13 @@ class ListPage extends StatefulWidget {
   String location;
 
   List<DocumentSnapshot> documentList;
+  List<double> scores;
 
-  ListPage({super.key, required this.location, required this.documentList});
+  ListPage(
+      {super.key,
+      required this.location,
+      required this.documentList,
+      required this.scores});
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -19,7 +24,49 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   TextEditingController searchController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
+  List<DocumentSnapshot> documentDuplicate = [];
+  List<double> scoresDuplicate = [];
+
+  void filterSearchResults(String query) {
+    List<DocumentSnapshot> dummySearchList = <DocumentSnapshot>[];
+    List<double> dummySearchListScores = <double>[];
+    dummySearchList.addAll(documentDuplicate);
+    dummySearchListScores.addAll(scoresDuplicate);
+    if (query.isNotEmpty) {
+      List<DocumentSnapshot> dummyListData = <DocumentSnapshot>[];
+      List<double> dummyListDataScores = <double>[];
+      for (DocumentSnapshot doc in dummySearchList) {
+        if ((doc.data() as Map<String, dynamic>)["name"]
+            .toLowerCase()
+            .contains(query.toLowerCase())) {
+          dummyListData.add(doc);
+          dummyListDataScores
+              .add(dummySearchListScores[dummySearchList.indexOf(doc)]);
+        }
+      }
+      setState(() {
+        documentDuplicate.clear();
+        documentDuplicate.addAll(dummyListData);
+        scoresDuplicate.clear();
+        scoresDuplicate.addAll(dummyListDataScores);
+      });
+      return;
+    } else {
+      setState(() {
+        documentDuplicate.clear();
+        documentDuplicate.addAll(widget.documentList);
+        scoresDuplicate.clear();
+        scoresDuplicate.addAll(widget.scores);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    documentDuplicate.addAll(widget.documentList);
+    scoresDuplicate.addAll(widget.scores);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +133,10 @@ class _ListPageState extends State<ListPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: EdgeInsets.only(left: width * 0.058),
-              child: TextFormField(
+              child: TextField(
+                onChanged: (value) {
+                  filterSearchResults(value);
+                },
                 controller: searchController,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -109,18 +159,18 @@ class _ListPageState extends State<ListPage> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                DocumentSnapshot bar = widget.documentList.elementAt(index);
+                DocumentSnapshot bar = documentDuplicate.elementAt(index);
                 final data = bar.data()! as Map<String, dynamic>;
-                return barCard(
-                    img: "assets/card1.png",
-                    name: data["name"],
-                    type: "",
-                    time: "4-7",
-                    price: "\$ ",
-                    rating: data["rating"],
-                    dollar: data["PriceRange"],
-                    up: false,
-                    width: width);
+                return BarCard(
+                  imgArray: data['pictureArray'],
+                  name: data["name"],
+                  type: "",
+                  time: data["Hours"],
+                  price: "\$ ",
+                  rating: (widget.scores.elementAt(index) * 100)
+                      .toStringAsPrecision(3),
+                  dollar: data["PriceRange"],
+                );
                 /*
                 return ListTile(
                     contentPadding:
@@ -139,7 +189,7 @@ class _ListPageState extends State<ListPage> {
                     });
                 */
               },
-              itemCount: widget.documentList.length,
+              itemCount: documentDuplicate.length,
             ),
 /*
             //card2

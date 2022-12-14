@@ -46,6 +46,7 @@ dependencies:
   geocoding:
   address_search_field:
   flutter_riverpod: ^1.0.4
+  carousel_slider: ^4.2.1
   # add googlefonts
   # add fontawesomeicons
 

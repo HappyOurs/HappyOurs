@@ -43,13 +43,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _goToListPage(List<DocumentSnapshot> barsInRange) {
+  _goToListPage(List<DocumentSnapshot> barsInRange, List<double> scores) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ListPage(
                 location: locationController.text,
                 documentList: barsInRange,
+                scores: scores,
               )),
     );
   }
@@ -559,7 +560,7 @@ class _HomePageState extends State<HomePage> {
 // get the collection reference or query
       var collectionReference = _firestore.collection('bars_master');
 
-      double radius = 5;
+      double radius = 0.5;
       String field = 'location';
 
       List<DocumentSnapshot<Object?>> barsInRange = await ((geo
@@ -588,8 +589,9 @@ class _HomePageState extends State<HomePage> {
           aScoreCount += double.parse(aData['dateScore']);
           bScoreCount += double.parse(bData['dateScore']);
         }
-        return aScoreCount.compareTo(bScoreCount);
+        return bScoreCount.compareTo(aScoreCount);
       });
+      List<double> scores = [];
       for (DocumentSnapshot doc in barsInRange) {
         print(doc.data());
 
@@ -607,11 +609,11 @@ class _HomePageState extends State<HomePage> {
         if (dateSelected) {
           scoreCount += double.parse(data['dateScore']);
         }
+        scores.add(scoreCount);
+        print(scoreCount);
       }
-      print(barsInRange);
-      _goToListPage(barsInRange as List<DocumentSnapshot>);
+
+      _goToListPage(barsInRange, scores);
     }
   }
 }
-
-class ExtraInfo {}
