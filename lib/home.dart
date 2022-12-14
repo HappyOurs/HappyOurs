@@ -178,7 +178,17 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: width * 0.103,
                     width: width * 0.71,
-                    child: TextFormField(
+                    child: TextField(
+                      onSubmitted: (value) {
+                        String search = value.toLowerCase();
+                        setState(() {
+                          collegeSelected = search.contains("college");
+                          dateSelected = search.contains("date") ||
+                              search.contains("romantic");
+                          beerSelected = search.contains("beer");
+                          wineSelected = search.contains("wine");
+                        });
+                      },
                       controller: searchController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
