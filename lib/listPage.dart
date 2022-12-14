@@ -11,12 +11,14 @@ class ListPage extends StatefulWidget {
 
   List<DocumentSnapshot> documentList;
   List<double> scores;
+  GeoFirePoint geoPoint;
 
   ListPage(
       {super.key,
       required this.location,
       required this.documentList,
-      required this.scores});
+      required this.scores,
+      required this.geoPoint});
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -105,16 +107,6 @@ class _ListPageState extends State<ListPage> {
             ),
           ],
         ),
-        actions: [
-          const Icon(
-            //needs change
-            Icons.menu,
-            color: Colors.black,
-          ),
-          SizedBox(
-            width: width * 0.05,
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -161,10 +153,13 @@ class _ListPageState extends State<ListPage> {
               itemBuilder: (context, index) {
                 DocumentSnapshot bar = documentDuplicate.elementAt(index);
                 final data = bar.data()! as Map<String, dynamic>;
+                double distance = widget.geoPoint.distance(
+                    lat: data['location']['geopoint'].latitude,
+                    lng: data['location']['geopoint'].longitude);
                 return BarCard(
                   imgArray: data['pictureArray'],
                   name: data["name"],
-                  type: "",
+                  type: data["distance"] ?? distance,
                   time: data["Hours"],
                   price: "\$ ",
                   rating: (widget.scores.elementAt(index) * 100)

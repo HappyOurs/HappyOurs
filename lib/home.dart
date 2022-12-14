@@ -11,7 +11,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'listPage.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 final geo = Geoflutterfire();
 final _firestore = FirebaseFirestore.instance;
@@ -29,6 +31,8 @@ class _HomePageState extends State<HomePage> {
       TextEditingController(text: "Loading");
 
   String _currentAddress = "loading...";
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
 
   double? userLat;
   double? userLong;
@@ -36,6 +40,34 @@ class _HomePageState extends State<HomePage> {
   bool dateSelected = false;
   bool beerSelected = false;
   bool wineSelected = false;
+
+  void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  /// Each time to start a speech recognition session
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  /// Manually stop the active speech recognition session
+  /// Note that there are also timeouts that each platform enforces
+  /// and the SpeechToText plugin supports setting timeouts on the
+  /// listen method.
+  void _stopListening() async {
+    await _speechToText.stop();
+    setState(() {});
+  }
+
+  /// This is the callback that the SpeechToText plugin calls when
+  /// the platform returns recognized words.
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      searchController.text = result.recognizedWords;
+    });
+  }
 
   void locationControllerText(String value) {
     setState(() {
@@ -51,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                 location: locationController.text,
                 documentList: barsInRange,
                 scores: scores,
+                geoPoint: geo.point(latitude: userLat!, longitude: userLong!),
               )),
     );
   }
@@ -63,6 +96,7 @@ class _HomePageState extends State<HomePage> {
         .catchError((e) {
       print(e);
     });
+    _initSpeech();
   }
 
   final geoMethods = GeoMethods(
@@ -178,7 +212,17 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: width * 0.103,
                     width: width * 0.71,
-                    child: TextFormField(
+                    child: TextField(
+                      onSubmitted: (value) {
+                        String search = value.toLowerCase();
+                        setState(() {
+                          collegeSelected = search.contains("college");
+                          dateSelected = search.contains("date") ||
+                              search.contains("romantic");
+                          beerSelected = search.contains("beer");
+                          wineSelected = search.contains("wine");
+                        });
+                      },
                       controller: searchController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -192,10 +236,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: _speechToText.isNotListening
+                        ? _startListening
+                        : _stopListening,
                     child: Container(
-                        child: const Icon(
-                      Icons.mic,
+                        child: Icon(
+                      _speechToText.isNotListening ? Icons.mic_off : Icons.mic,
                       color: Color(0xfff60f0f),
                     )),
                   ),

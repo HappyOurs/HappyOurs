@@ -15,7 +15,7 @@ class BarCard extends StatelessWidget {
 
   List? imgArray;
   String? name;
-  String? type;
+  double? type;
   String? time;
   String? price;
   String? rating;
@@ -123,7 +123,7 @@ class BarCard extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      type!,
+                      "Distance : ${(type! * 1093.61).toStringAsPrecision(4)} yards",
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,

@@ -47,6 +47,7 @@ dependencies:
   address_search_field:
   flutter_riverpod: ^1.0.4
   carousel_slider: ^4.2.1
+  speech_to_text: ^6.1.1
   # add googlefonts
   # add fontawesomeicons
 
