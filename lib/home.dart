@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:happyours/widgets/bar_card.dart';
 import 'package:happyours/widgets/drinkOption.dart';
 import 'package:happyours/widgets/vibe_option.dart';
 
@@ -90,13 +89,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    _initSpeech();
     super.initState();
     _determinePosition()
         .then((value) => _getAddressFromLatLng(value.latitude, value.longitude))
         .catchError((e) {
       print(e);
     });
-    _initSpeech();
+    searchController.addListener(() {
+      String search = searchController.text.toLowerCase();
+      setState(() {
+        collegeSelected = search.contains("college");
+        dateSelected = search.contains("date") || search.contains("romantic");
+        beerSelected = search.contains("beer");
+        wineSelected = search.contains("wine");
+      });
+    });
   }
 
   final geoMethods = GeoMethods(
