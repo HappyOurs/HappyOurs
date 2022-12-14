@@ -29,6 +29,13 @@
             {
               "client_id": "343832810991-9v1vrm3jo9srfh84123jgn9as7550so4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "343832810991-7oiodiqmb3ar22vsaio64spmm83gsh1n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nyu.happyours"
+              }
             }
           ]
         }
