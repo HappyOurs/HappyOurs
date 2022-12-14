@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BarCard extends StatelessWidget {
   BarCard({
@@ -11,6 +13,8 @@ class BarCard extends StatelessWidget {
     this.dollar,
     Key? key,
     this.time,
+    this.latitude,
+    this.longitude,
   }) : super(key: key);
 
   List? imgArray;
@@ -20,6 +24,8 @@ class BarCard extends StatelessWidget {
   String? price;
   String? rating;
   String? dollar;
+  double? latitude;
+  double? longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -70,108 +76,120 @@ class BarCard extends StatelessWidget {
                         ))
                     .toList(),
               )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //name + rating
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      name!,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Inter',
-                        fontSize: 15,
-                        fontStyle: FontStyle.normal,
+          GestureDetector(
+            onTap: () async {
+              Uri googleUrl = Uri.parse(
+                  'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+              if (await canLaunchUrl(googleUrl)) {
+                await launchUrl(googleUrl);
+              } else {
+                showSimpleNotification(const Text("Can't open map"),
+                    background: Colors.red);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //name + rating
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        name!,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Inter',
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    //Rating ->
-                    Container(
-                      height: width * 0.039,
-                      width: width * 0.106,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.green),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              rating!,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
+                      //Rating ->
+                      Container(
+                        height: width * 0.039,
+                        width: width * 0.106,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.green),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                rating!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Inter',
+                                  fontSize: 10,
+                                  fontStyle: FontStyle.normal,
+                                ),
                               ),
-                            ),
-                            const Icon(
-                              Icons.star,
-                              size: 10,
-                              color: Colors.white,
-                            ),
-                          ]),
-                    )
-                  ],
-                ),
-                //type + dollar
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Distance : ${(type! * 1093.61).toStringAsPrecision(4)} yards",
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Inter',
-                        fontSize: 9,
-                        fontStyle: FontStyle.normal,
+                              const Icon(
+                                Icons.star,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ]),
+                      )
+                    ],
+                  ),
+                  //type + dollar
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Distance : ${(type! * 1093.61).toStringAsPrecision(4)} yards",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Inter',
+                          fontSize: 9,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                    Flexible(
-                      flex: 19,
-                      child: Container(),
-                    ),
-                    Text(
-                      dollar!,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Inter',
-                        fontSize: 10,
-                        fontStyle: FontStyle.normal,
+                      Flexible(
+                        flex: 19,
+                        child: Container(),
                       ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: width * 0.02,
-                ),
-                //msg
-                Row(
-                  children: [
-                    Text(
-                      "Hours : ${time}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: Color(0xfff60f0f),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Inter',
-                        fontSize: 10,
-                        fontStyle: FontStyle.normal,
+                      Text(
+                        dollar!,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: width * 0.02,
+                  ),
+                  //msg
+                  Row(
+                    children: [
+                      Text(
+                        time == "" ? "" : "Hours : ${time}",
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          color: Color(0xfff60f0f),
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nyu.happyours">
    <application
-        android:label="happyours"
+        android:label="HappyOurs"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,5 +38,13 @@
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
+    </queries>
+    <queries>
+        <!-- If your app checks for SMS support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- If your app checks for call support -->
     </queries>
 </manifest>

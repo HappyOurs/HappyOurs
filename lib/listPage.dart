@@ -165,6 +165,8 @@ class _ListPageState extends State<ListPage> {
                   rating: (widget.scores.elementAt(index) * 100)
                       .toStringAsPrecision(3),
                   dollar: data["PriceRange"],
+                  latitude: data['location']['geopoint'].latitude,
+                  longitude: data['location']['geopoint'].longitude,
                 );
                 /*
                 return ListTile(

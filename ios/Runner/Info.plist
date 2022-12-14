@@ -53,5 +53,11 @@
 	<string>This app recognises voice to improve search</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Search with voice requires microphone usage</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemapsurl</string>
+		<string>comgooglemaps</string>
+		<string>https</string>
+	</array>
 </dict>
 </plist>
