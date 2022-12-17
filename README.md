@@ -2,7 +2,7 @@
 
 HappyOurs is a Flutter project that allows users to discover and rate happy hour specials at local bars. It includes features such as searching for bars by location, price range, and type of drink, as well as saving favorite bars and viewing live mood ratings.
 
-###Dependencies
+### Dependencies
 The following dependencies are required for this Flutter project:
 
 ```flutter
@@ -143,7 +143,7 @@ The script is designed to handle errors that may occur during the data scraping 
 ## [Yelp Scraper](https://github.com/HappyOurs/HappyOurs/blob/main/scraping/yelp_scraper.py)
 This code is a tool for scraping data from Yelp.com. The code reads in a CSV file containing restaurant IDs and scrapes information about each restaurant, including its name, location, number of reviews, rating, categories, address, hours, amenities, price range, and website. The code also scrapes the number of reviews containing certain keywords (e.g. "college", "date", "wine", "beer") and calculates a score for each keyword based on the number of reviews containing the keyword relative to the total number of reviews for the restaurant. The scraped data is then written to a new CSV file.
 
-###Dependencies
+### Dependencies
 The following dependencies are required for this code:
 
 time
